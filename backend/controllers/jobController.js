@@ -34,7 +34,7 @@ const createJobs = asyncHandler(async (req, res) => {
 // @route PUT /api/job
 // @access Private
 const updateJobs = asyncHandler(async(req, res) => {
-    const job = Jobs.findById(req.params.id)
+    const job = await Jobs.findById(req.params.id)
     if(!job){
         res.status(400)
         res.json('Job not found')
@@ -58,7 +58,7 @@ const updateJobs = asyncHandler(async(req, res) => {
 // @route DELETE /api/job
 // @access Private
 const deleteJobs = asyncHandler(async(req, res) => {
-    const job = Jobs.findById(req.params.id)
+    const job = await Jobs.findById(req.params.id)
     if(!job){
         res.status(400)
         res.json('Job not found')

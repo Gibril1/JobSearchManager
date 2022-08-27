@@ -40,7 +40,7 @@ const createInterview = asyncHandler(async (req, res) => {
 // @route PUT /api/interviews/id
 // @access Private
 const updateInterview = asyncHandler(async(req, res) => {
-    const interview = Interview.findById(req.params.id)
+    const interview = await Interview.findById(req.params.id)
     
     if(!interview) {
         res.status(400)
@@ -65,7 +65,7 @@ const updateInterview = asyncHandler(async(req, res) => {
 // @route POST /api/interviews
 // @access Private
 const deleteInterview = asyncHandler(async(req, res) => {
-    const interview = Interview.findById(req.params.id)
+    const interview = await Interview.findById(req.params.id)
     if(!interview) {
         res.status(400)
         throw new Error('This interview cannot be found')
