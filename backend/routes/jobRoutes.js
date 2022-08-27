@@ -6,9 +6,11 @@ const {
     updateJobs,
     deleteJobs } = require('../controllers/jobController')
 
-router.get('/', getJobs)
-router.post('/', createJobs)
-router.put('/:id', updateJobs)
-router.delete('/:id', deleteJobs)
+const { protect } = require('../middleware/authMiddleware')
+
+
+router.route('/').get(protect, getJobs).post(protect, createJobs)
+router.route('/:id').put(protect, updateJobs).delete(protect, deleteJobs)
+
 
 module.exports = router

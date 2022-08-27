@@ -7,9 +7,11 @@ const {
     deleteInterview 
 } = require('../controllers/interviewController')
 
-router.get('/', getInterview)
-router.post('/', createInterview)
-router.put('/:id', updateInterview)
-router.delete('/:id', deleteInterview)
+const { protect } = require('../middleware/authMiddleware')
+
+router.get('/', protect, getInterview)
+router.post('/', protect, createInterview)
+router.put('/:id',protect, updateInterview)
+router.delete('/:id', protect, deleteInterview)
 
 module.exports = router

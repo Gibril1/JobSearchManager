@@ -1,6 +1,11 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 const jobSchema = new Schema({
+    user: {
+        type: mongoose.Schema.Types.ObjectId,
+        required: true,
+        ref : 'User'
+    },
     name:{
         type:String,
         required: true
@@ -19,7 +24,7 @@ const jobSchema = new Schema({
     }
 })
 
-module.exports = mongoose.model('Job', jobSchema)
+module.exports = mongoose.model('Jobs', jobSchema)
 
 
 
