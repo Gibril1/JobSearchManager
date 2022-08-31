@@ -1,5 +1,7 @@
 const Jobs = require('../models/jobModel')
 const asyncHandler = require('express-async-handler')
+const cloudinary = require('../utils/cloudinary')
+const upload = require('../utils/multer')
 
 // @desc Gets all the jobs that the user has applied for
 // @route GET /api/job
@@ -12,7 +14,9 @@ const getJobs = asyncHandler(async(req, res) => {
 // @desc Create jobs that the user has applied for
 // @route POST /api/job
 // @access Private
-const createJobs = asyncHandler(async (req, res) => {
+const createJobs = asyncHandler(upload.single('image'), async (req, res) => {
+
+    const result = await cloudinary.uploader.upload(req.file.path)
     // check if the fields are not empty
     if(!req.body){
         res.status(400)
@@ -23,8 +27,9 @@ const createJobs = asyncHandler(async (req, res) => {
         name: req.body.name,
         location: req.body.location,
         jobPosition: req.body.jobPosition,
-        cv: req.body.cv,
-        user: req.user.id
+        user: req.user.id,
+        avatar:result.secure_url,
+        cloudinary_id: result.public_id
     })
 
     res.status(200).json(job)

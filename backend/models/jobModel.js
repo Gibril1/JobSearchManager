@@ -18,9 +18,11 @@ const jobSchema = new Schema({
         type:String,
         required: true
     },
-    cv:{
-        type: String,
-        required: true
+    avatar: {
+        type: String
+    },
+    cloudinary_id: {
+        type: String
     }
 })
 

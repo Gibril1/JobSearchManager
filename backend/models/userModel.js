@@ -19,7 +19,7 @@ const userSchema = new Schema({
     },
     age:{
         type: String,
-        required: [true, 'Please enter your name'],
+        required: true
         
     },
     email:{
