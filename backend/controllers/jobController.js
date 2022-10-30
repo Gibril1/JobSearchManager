@@ -1,4 +1,5 @@
 const Jobs = require('../models/jobModel')
+const User = require('../models/userModel')
 const asyncHandler = require('express-async-handler')
 const cloudinary = require('../utils/cloudinary')
 const upload = require('../utils/multer')
@@ -11,12 +12,27 @@ const getJobs = asyncHandler(async(req, res) => {
     res.status(200).json({ jobs : allJobs})
 })
 
+
+// @desc Gets all the jobs that have been posted in this application
+// @route GET /api/job
+const getAllJobs = asyncHandler(async(req, res) => {
+    const jobs = await Jobs.find()
+    res.status(200).json(jobs)
+})
+
 // @desc Create jobs that the user has applied for
 // @route POST /api/job
 // @access Private
 const createJobs = asyncHandler(upload.single('image'), async (req, res) => {
 
+    // upload picture into the cloudinary app
     const result = await cloudinary.uploader.upload(req.file.path)
+
+    if(!req.user){
+        res.status(404)
+        throw new Error('User does not exist')
+    }
+
     // check if the fields are not empty
     if(!req.body){
         res.status(400)
@@ -40,6 +56,7 @@ const createJobs = asyncHandler(upload.single('image'), async (req, res) => {
 // @access Private
 const updateJobs = asyncHandler(async(req, res) => {
     const job = await Jobs.findById(req.params.id)
+
     if(!job){
         res.status(400)
         res.json('Job not found')
@@ -55,7 +72,7 @@ const updateJobs = asyncHandler(async(req, res) => {
         throw new Error('User not authorized')
       }
 
-    const updatedJob = Jobs.findByIdAndUpdate(req.params.id, req.body, { new: true})
+    const updatedJob = Jobs.findByIdAndUpdate(req.params.id, req.body, { new: true })
     res.status(200).json(updatedJob)
 })
 
@@ -85,6 +102,7 @@ const deleteJobs = asyncHandler(async(req, res) => {
 })
 module.exports = {
     getJobs,
+    getAllJobs,
     createJobs,
     updateJobs,
     deleteJobs

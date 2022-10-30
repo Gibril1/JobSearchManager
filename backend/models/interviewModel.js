@@ -1,5 +1,4 @@
 const mongoose = require('mongoose')
-// const Schema = mongoose.Schema
 
 const interviewSchema = new mongoose.Schema({
     user: {
@@ -18,7 +17,8 @@ const interviewSchema = new mongoose.Schema({
     },
     date: {
         type: Date,
-        default: Date.now()
+        default: Date.now(),
+        immutable: true
     },
 
     sucess: {

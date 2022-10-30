@@ -4,7 +4,6 @@ const dotenv = require('dotenv').config()
 const port = process.env.PORT || 5000
 const { errorHandler } = require('./middleware/errorMiddleware')
 const connectDB = require('./config/db')
-const bodyParser = require('body-parser')
 const multer = require('multer')
 const upload = multer
 
@@ -12,12 +11,8 @@ connectDB()
 
 app = express()
 
-app.use(bodyParser.json())
-app.use(bodyParser.urlencoded())
-app.use(bodyParser.urlencoded({ extended: true })); 
-app.use(express.static('public'));
-app.use(express.json())
-app.use(express.urlencoded({ extended: false }))
+app.use(express.json({ limit: "50mb" }))
+app.use(express.urlencoded({ extended: true, limit:"50mb" }))
 
 app.use('/api/job', require('./routes/jobRoutes'))
 app.use('/api/interview', require('./routes/interviewRoutes'))

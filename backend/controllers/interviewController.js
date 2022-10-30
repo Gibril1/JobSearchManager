@@ -10,6 +10,14 @@ const getInterview = asyncHandler(async (req, res) => {
     res.status(200).json({interviews: interviews})
 })
 
+// @desc Get all the interviews that has been saved in this application
+// @route GET /api/interviews/all
+// @access Public
+const getAllInterviews = asyncHandler(async(req, res) => {
+    const interviews = await Interview.find()
+    res.status(200).json({interviews: interviews})
+
+})
 
 // @desc Creates a new interview for the user for a particular job
 // @route POST /api/interviews
@@ -19,16 +27,25 @@ const createInterview = asyncHandler(async (req, res) => {
         res.status(400)
         res.json('Enter your fields')
     }
-    
-    
+
+    // get the job for the particular interview
+    const jobExists = await Job.findById(req.params.id)
+
+    // check if the job exist
+    if(!jobExists){
+        res.status(404)
+        throw new Error('Job does not exist')
+    }
+
     const interview = {
         description : req.body.description,
         date : req.body.date,
         success : req.body.success,
         feedback : req.body.feedback,
-        jobId : req.body.jobId,
+        jobId : jobExists.id,
         user: req.user.id
      }
+
 
     const myInterview = new Interview(interview)
     await myInterview.save()
@@ -52,10 +69,10 @@ const updateInterview = asyncHandler(async(req, res) => {
         throw new Error('User not found')
     }
     
-    // if (interview.user.toString() !== req.user.id) {
-    //     res.status(401)
-    //     throw new Error('User not authorized')
-    //   }
+    if (interview.user.toString() !== req.user.id) {
+        res.status(401)
+        throw new Error('User not authorized')
+      }
 
     const updatedInterview = Interview.findByIdAndUpdate(req.params.id, req.body, { new : true })
     res.status(200).json(updatedInterview)
@@ -76,10 +93,10 @@ const deleteInterview = asyncHandler(async(req, res) => {
         throw new Error('User not found')
     }
 
-    // if (interview.user.toString() !== req.user.id) {
-    //     res.status(401)
-    //     throw new Error('User not authorized')
-    //   }
+    if (interview.user.toString() !== req.user.id) {
+        res.status(401)
+        throw new Error('User not authorized')
+      }
 
     await interview.remove()
     res.status(200).json({ id: req.params.id })
@@ -87,6 +104,7 @@ const deleteInterview = asyncHandler(async(req, res) => {
 
 module.exports = {
     getInterview,
+    getAllInterviews,
     createInterview,
     updateInterview,
     deleteInterview

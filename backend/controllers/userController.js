@@ -2,13 +2,30 @@ const User = require('../models/userModel')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const asyncHandler = require('express-async-handler')
+
 // @desc Register User
 // @routes POST /api/users/
 // @access Public
 const registerUser = asyncHandler(async(req, res) => {
-    const { first_name, last_name, other_name, dob, age, email, password } = req.body
+    const { 
+            firstName, 
+            lastName, 
+            otherName, 
+            dob, 
+            age, 
+            email, 
+            password 
+        } = req.body
 
-    if( !first_name || !last_name || !other_name || !dob || !age || !email || !password) {
+    if( 
+        !firstName 
+        || !lastName 
+        || !otherName 
+        || !dob 
+        || !age 
+        || !email 
+        || !password
+        ) {
         res.status(400)
         throw new Error('Please enter all fields')
     }
@@ -26,9 +43,9 @@ const registerUser = asyncHandler(async(req, res) => {
     const hashedPassword = await bcrypt.hash(password, salt)
 
     const user = await User.create({
-        first_name,
-        last_name,
-        other_name,
+        firstName,
+        lastName,
+        otherName,
         dob,
         age,
         email,
@@ -75,11 +92,16 @@ const loginUser = asyncHandler(async(req, res) => {
     }
 })
 
-// @desc Login User
-// @routes POST /api/users/login
-// @access Public
+// @desc Get User
+// @routes POST /api/users/me
+// @access Private
 const getUser = asyncHandler(async(req, res) => {
     res.status(200).json(req.user)
+})
+
+const getUsers = asyncHandler(async(req, res) => {
+    const users = await User.find()
+    res.status(200).json(users)
 })
 
 const generateToken = ( id ) => {
@@ -89,5 +111,6 @@ const generateToken = ( id ) => {
 module.exports = {
     registerUser,
     loginUser,
-    getUser
+    getUser,
+    getUsers
 }

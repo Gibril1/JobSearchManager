@@ -21,8 +21,18 @@ const jobSchema = new Schema({
     avatar: {
         type: String
     },
-    cloudinary_id: {
+    cloudinaryId: {
         type: String
+    },
+    createdAt:{
+        type: Date,
+        default: Date.now(),
+        immutable: true
+    },
+    updatedAt:{
+        type: Date,
+        default: Date.now(),
+        immutable: true
     }
 })
 
