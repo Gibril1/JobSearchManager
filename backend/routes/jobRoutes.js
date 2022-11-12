@@ -10,7 +10,8 @@ const {
 const { protect } = require('../middleware/authMiddleware')
 
 
-router.route('/').get(protect, getJobs).post(protect, createJobs)
+router.get('/', protect, getJobs)
+router.post('/', createJobs)
 router.get('/all', getAllJobs)
 router.route('/:id').put(protect, updateJobs).delete(protect, deleteJobs)
 
