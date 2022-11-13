@@ -8,6 +8,7 @@ const cors = require('cors')
 
 
 
+
 connectDB()
 
 app = express()
@@ -19,11 +20,16 @@ app.use(express.urlencoded({ extended: true, limit:"50mb" }))
 
 
 
+
+
+
+app.use('/api/user', require('./routes/userRoutes'))
 app.use('/api/job', require('./routes/jobRoutes'))
 app.use('/api/interview', require('./routes/interviewRoutes'))
-app.use('/api/user', require('./routes/userRoutes'))
 
 app.use(errorHandler)
 
-app.listen(port, console.log(`Server is listening at port ${port}`))
+app.listen(port, () => {
+    console.log(`Server is listening at port ${port}`)
+})
 

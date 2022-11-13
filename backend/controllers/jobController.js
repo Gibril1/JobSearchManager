@@ -1,83 +1,59 @@
-const Jobs = require('../models/jobModel')
-const User = require('../models/userModel')
+const Job = require('../models/jobModel')
 const asyncHandler = require('express-async-handler')
-const cloudinary = require('../utils/cloudinary')
 const upload = require('../utils/multer')
+const cloudinary = require('../utils/cloudinary')
 
-
-// @desc Gets all the jobs that the user has applied for
-// @route GET /api/job
+// @desc Create Jobs
+// @routes POST /api/jobs
 // @access Private
-const getJobs = asyncHandler(async(req, res) => {
-    const allJobs = await Jobs.find({ user: req.user.id })
-    res.status(200).json({ jobs : allJobs})
-})
-
-
-// @desc Gets all the jobs that have been posted in this application
-// @route GET /api/job
-const getAllJobs = asyncHandler(async(req, res) => {
-    const jobs = await Jobs.find()
-    res.status(200).json(jobs)
-})
-
-// @desc Create jobs that the user has applied for
-// @route POST /api/job
-// @access Private
-const createJobs = asyncHandler(upload.single('image'),async(req, res) => {
-    try{
-    // upload picture into the cloudinary app
-    
-    const result = await cloudinary.uploader.upload(req.file.path)
+const createJobs = asyncHandler(async(req, res) => {
     
     if(!req.user){
         res.status(400)
-        throw new Error('You are not authorized')
+        throw new Error('Not authorized')
     }
-
+    
     if(!req.body){
         res.status(400)
-        throw new Error('Please fill all the fields')
+        throw new Error('Please enter all the fields')
     }
 
-    const job = await Jobs.create({
+    const job = await Job.create({
         name: req.body.name,
         location: req.body.location,
         jobPosition: req.body.jobPosition,
-        avatar: result.secure_url,
-        cloudinaryId: result.public_id
+        user: req.user.id
     })
-    
-    
-    
-
-    
-    
 
     res.status(200).json(job)
-
-
-
-    }catch(err){
-        console.log(err)
-    }
-
-
-    
 })
 
-
-// @desc Update jobs that the user has applied for
-// @route PUT /api/job
+// @desc Get Jobs
+// @routes GET /api/jobs
 // @access Private
-const updateJobs = asyncHandler(async(req, res) => {
-    const job = await Jobs.findById(req.params.id)
-
-    if(!job){
+const getJobs = asyncHandler(async(req, res) => {
+    if(!req.user){
         res.status(400)
-        res.json('Job not found')
+        throw new Error('Not authorized')
     }
 
+    const job = await Job.find({ user: req.user.id })
+    
+    res.status(200).json(job)
+})
+
+// @desc Update Jobs
+// @routes PUT /api/jobs/:id
+// @access Private
+const updateJobs = asyncHandler(async(req, res) => {
+    const job = await Job.findById(req.params.id)
+    
+    if(!job){
+        res.status(400)
+        throw new Error(`Job with id ${req.params.id} does not exist`)
+    }
+
+    
     if(!req.user){
         res.status(400)
         throw new Error('User not found')
@@ -88,15 +64,15 @@ const updateJobs = asyncHandler(async(req, res) => {
         throw new Error('User not authorized')
       }
 
-    const updatedJob = Jobs.findByIdAndUpdate(req.params.id, req.body, { new: true })
+    const updatedJob = await Job.findByIdAndUpdate(req.params.id, req.body, { new: true })
     res.status(200).json(updatedJob)
 })
 
-// @desc Delete jobs that the user has applied for
-// @route DELETE /api/job
+// @desc Delete Jobs
+// @routes DELETE /api/jobs/:id
 // @access Private
 const deleteJobs = asyncHandler(async(req, res) => {
-    const job = await Jobs.findById(req.params.id)
+    const job = await Job.findById(req.params.id)
     if(!job){
         res.status(400)
         res.json('Job not found')
@@ -114,18 +90,11 @@ const deleteJobs = asyncHandler(async(req, res) => {
 
     await job.remove()
     res.status(200).json({ id: req.params.id })
-
 })
 
-
-// const createJobs = asyncHandler(async(req, res) => {
-//     res.status(200).json('This is the response')
-// })
-
 module.exports = {
-    getJobs,
-    getAllJobs,
     createJobs,
+    getJobs,
     updateJobs,
     deleteJobs
 }

@@ -32,7 +32,6 @@ const jobSchema = new Schema({
     updatedAt:{
         type: Date,
         default: Date.now(),
-        immutable: true
     }
 })
 

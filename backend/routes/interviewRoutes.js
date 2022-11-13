@@ -1,19 +1,16 @@
 const express = require('express')
 const router = express.Router()
-const { 
-    getInterview,
-    getAllInterviews,
+
+const {
     createInterview,
+    getInterview,
     updateInterview,
-    deleteInterview 
+    deleteInterview
 } = require('../controllers/interviewController')
 
 const { protect } = require('../middleware/authMiddleware')
 
-router.get('/', protect, getInterview)
-router.get('/all', getAllInterviews)
-router.post('/', protect, createInterview)
-router.put('/:id',protect, updateInterview)
-router.delete('/:id', protect, deleteInterview)
+router.get('/',protect, getInterview)
+router.route('/:id').post(protect, createInterview).delete(protect, deleteInterview).put(protect, updateInterview)
 
 module.exports = router
