@@ -1,17 +1,20 @@
+const mongoose = require('mongoose')
 const Interview = require('../models/interviewModel')
 const Job = require('../models/jobModel')
 const asyncHandler = require('express-async-handler')
+
 
 // @desc Create an Interview
 // @route POST /api/interview/:id
 // @access Private
 const createInterview = asyncHandler(async(req, res) => {
+    
     // check if the job for this interview exists
-    const jobExists = await Job.findById(req.params.id)
+    const jobExists = await Job.findById(req.body.id)
 
     if(!jobExists){
         res.status(404)
-        throw new Error(`Job with id ${req.params.id} does not exist`)
+        throw new Error(`Job with id ${id} does not exist`)
     }
 
     if(!req.body){
@@ -20,7 +23,7 @@ const createInterview = asyncHandler(async(req, res) => {
     }
 
     const interview = await Interview.create({
-        jobId: req.params.id,
+        jobId: req.body.id,
         description: req.body.description,
         user: req.user.id,
         success: req.body.success,
@@ -83,7 +86,7 @@ const deleteInterview = asyncHandler(async(req, res) => {
 // @route GET /api/interview/
 // @access Private
 const getInterview = asyncHandler(async(req, res) => {
-    const interviews = await Interview.find({ user: req.user.id})
+    const interviews = await Interview.find({ jobId: req.params.id})
 
     res.status(200).json(interviews)
 })

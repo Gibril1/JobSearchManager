@@ -10,7 +10,8 @@ const {
 
 const { protect } = require('../middleware/authMiddleware')
 
-router.get('/',protect, getInterview)
-router.route('/:id').post(protect, createInterview).delete(protect, deleteInterview).put(protect, updateInterview)
+
+router.post('/', protect, createInterview)
+router.route('/:id').get(protect, getInterview).delete(protect, deleteInterview).put(protect, updateInterview)
 
 module.exports = router

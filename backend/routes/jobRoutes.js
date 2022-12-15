@@ -1,18 +1,21 @@
 const express = require('express')
 const router = express.Router()
+const upload = require('../utils/multer')
 
 const { 
-    createJobs, 
+    createJobs,
     getJobs, 
+    getJob,
     updateJobs, 
     deleteJobs 
 } = require('../controllers/jobController')
 
 const { protect } = require('../middleware/authMiddleware')
 
-router.post('/', protect, createJobs)
+router.post('/', protect, upload.single('image'), createJobs)
+router.get('/:id', protect, getJob)
 router.get('/', protect, getJobs)
-router.put('/:id', protect,  updateJobs)
+router.put('/', protect,  updateJobs)
 router.delete('/:id', protect, deleteJobs)
 
 
