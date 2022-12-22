@@ -9,8 +9,8 @@ const cloudinary = require('../utils/cloudinary')
 const createJobs = asyncHandler(async(req, res) => {
     try {
 
-        console.log(req.body)
-        // // uploads image file to cloudinary
+        
+         // uploads image file to cloudinary
         const result = await cloudinary.uploader.upload(req.file.path)
         
 
@@ -79,7 +79,7 @@ const getJob = asyncHandler(async(req, res) => {
 // @access Private
 const updateJobs = asyncHandler(async(req, res) => {
     // res.json(req.body)
-    const job = await Job.findById(req.body.id)
+    const job = await Job.findById(req.params.id)
     
     if(!job){
         res.status(400)
@@ -97,7 +97,7 @@ const updateJobs = asyncHandler(async(req, res) => {
         throw new Error('User not authorized')
       }
     
-    const updatedJob = await Job.findByIdAndUpdate(req.body.id, req.body, { new: true })
+    const updatedJob = await Job.findByIdAndUpdate(req.params.id, req.body, { new: true })
     
     res.status(200).json(updatedJob)
 })

@@ -10,11 +10,11 @@ const asyncHandler = require('express-async-handler')
 const createInterview = asyncHandler(async(req, res) => {
     
     // check if the job for this interview exists
-    const jobExists = await Job.findById(req.body.id)
+    const jobExists = await Job.findById(req.params.id)
 
     if(!jobExists){
         res.status(404)
-        throw new Error(`Job with id ${id} does not exist`)
+        throw new Error(`Job with id ${req.params.id} does not exist`)
     }
 
     if(!req.body){
@@ -23,7 +23,7 @@ const createInterview = asyncHandler(async(req, res) => {
     }
 
     const interview = await Interview.create({
-        jobId: req.body.id,
+        jobId: jobExists._id,
         description: req.body.description,
         user: req.user.id,
         success: req.body.success,
