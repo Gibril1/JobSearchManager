@@ -70,3 +70,30 @@ For updating the details of a job based on its id
 For deleting a job
 
 
+## Interviews
+### InterviewModel
+The fields in this table include
+1. success: a boolean value for determining the success of the interview based on  the user's discretion
+2. description
+3. jobId: a foreign key field for the job
+4. user: a foreign key field to store the id of the field that posts this job
+5. timestamps
+
+### InterviewRoutes
+End points for accessing interview Data
+
+##### Users need to be authenticated in order to access this routes
+
+### POST /api/interview/:id
+For creating interviews based on a particular id
+### GET /api/interview/:id
+For getting a list of all the interviews that a user has gone for a particular job
+### GET /api/interview/:id
+For getting the details of a particular interview
+### PUT /api/interview/:id
+For updating the details of an interview based on its id
+### DELETE /api/interview/:id
+For deleting an interview
+
+
+
