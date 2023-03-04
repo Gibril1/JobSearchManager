@@ -14,7 +14,7 @@ The **backend** folder has these folders and what they contain
 5. ***utils***: This contains files for multer configuration which allows multipart/form-data to be parsed and eventually worked on. The cloudinary file allows for images and files to be stored there and in turn returns a url for the image which is stored in the database
 6. ***middleware***: The middleware folder contains files for checking errors and an authentication middleware for ensuring users are authenticated before accessing any routes
 
-## Routes 
+# Routes 
 There are there entities in this application. There are Users, Jobs and Interviews
 
 ## Users
@@ -40,5 +40,33 @@ This is the endpoint for registering a user
 This is the endpoint for logging in a user. It receives the email and password from the user. If the database checks are successful, it returns a json web token for successful authentication
 
 ##### NB: As stated earlier, the functions that make up this route are found in the controllers folder, specifically in the UserController.js file
+
+
+## Jobs
+### JobModel
+The fields in this table include
+1. name
+2. location
+3. jobPosition
+4. avatar
+5. cloudinaryId
+6. user: a foreign key field to store the id of the field that posts this job
+7. timestamps
+
+### JobRoutes
+End points for accessing Job Data
+
+##### Users need to be authenticated in order to access this routes
+
+### POST /api/job
+For creating jobs
+### GET /api/job
+For getting a list of all jobs a user has applied to
+### GET /api/job/:id
+For getting the details of a particular jobb
+### PUT /api/job/:id
+For updating the details of a job based on its id
+### DELETE /api/job/:id
+For deleting a job
 
 
