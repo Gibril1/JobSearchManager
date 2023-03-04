@@ -30,3 +30,14 @@ The database models that involve the users are found in the userModel.js file in
 8. avatar: for storing image of the user. The image is stored in cloudinary. It's the url of the image that is stored here
 9. cloudinaryId
 
+### UserRoutes
+These are the endpoints that are used in accessing User data. The functions that are to be performed using this routes are the **login** and **registration** purposes.
+###POST /api/user
+This is the endpoint for registering a user
+
+### POST /api/user/login
+This is the endpoint for logging in a user. It receives the email and password from the user. If the database checks are successful, it returns a json web token for successful authentication
+
+## NB: As stated earlier, the functions that make up this route are found in the controllers folder, specifically in the UserController.js file
+
+
