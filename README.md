@@ -9,6 +9,24 @@ The main folder for this project is labelled **backend**
 The **backend** folder has these folders and what they contain
 1. ***models***: This folder contains all the database models that were used for this project
 2. ***routes***: This folder contains the routes for the projects. The folder contains routes for particular entiities in the project
-3. ***controllers***: For clarity, the controllers folder contains files which have the functions for each routes. The files here have functions that ar invoked for every api endpoint
+3. ***controllers***: For clarity, the controllers folder contains files which have the functions for each routes. The files here have functions that are invoked for every api endpoint
 4. ***config***: This folder contains a single file called ***db.js*** that contains the function for connecting to the mongoose database
-5. ***utils***: This contains files for multer  \configuration which allows multipart/form-data to be parsed and eventually worked on. The cloudinary file allows for images and files to be stored there and in turn returns a url for the image which is stored in the database
+5. ***utils***: This contains files for multer configuration which allows multipart/form-data to be parsed and eventually worked on. The cloudinary file allows for images and files to be stored there and in turn returns a url for the image which is stored in the database
+6. ***middleware***: The middleware folder contains files for checking errors and an authentication middleware for ensuring users are authenticated before accessing any routes
+
+## Routes 
+There are there entities in this application. There are Users, Jobs and Interviews
+
+## Users
+### UserModel
+The database models that involve the users are found in the userModel.js file in the model folder. The fields in this table are:
+1. firstName
+2. lastName
+3. otherName
+4. dob
+5. age
+6. email
+7. password: this is stored as a hashed password using bcryptjs
+8. avatar: for storing image of the user. The image is stored in cloudinary. It's the url of the image that is stored here
+9. cloudinaryId
+
