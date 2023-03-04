@@ -33,7 +33,7 @@ The database models that involve the users are found in the userModel.js file in
 ### UserRoutes
 These are the endpoints that are used in accessing User data. The functions that are to be performed using this routes are the **login** and **registration** purposes.
 
-###POST /api/user
+### POST /api/user
 This is the endpoint for registering a user
 
 ### POST /api/user/login
